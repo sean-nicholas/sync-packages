@@ -1,10 +1,11 @@
-import { orderObject, pathToProjectPackageJson, pathToRootPackageJson } from './utils'
-import { writeFile } from 'fs'
+import { orderObject, pathToProjectPackageJson, pathToRootPackageJson, pathToProjectPackageLockJson } from './utils'
+import { writeFile, readFile } from 'fs'
 import { promisify } from 'util'
 import { loadPackageDefs } from './package-defs'
 import { PackageDefs } from './types/package-defs'
 
 const write = promisify(writeFile)
+const read = promisify(readFile)
 
 export async function syncProject(projectName, packageDefs: PackageDefs) {
   const project = packageDefs[projectName]
@@ -16,7 +17,7 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
   const dependencies = packageDefs[projectName].dependencies || {}
   const devDependencies = packageDefs[projectName].devDependencies || {}
 
-  // Add dependencies from projects in "uses"
+  // Add dependencies from other projects in project.uses
   if (project.uses) {
     for (const usedProjectName of project.uses) {
       const usedProject = packageDefs[usedProjectName]
@@ -29,10 +30,10 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
   packageJson.devDependencies = orderObject(devDependencies)
   await write(packageJsonPath, JSON.stringify(packageJson, null, 2))
 
-  // TODO: Check if this works with npm ci install
-  // const localePackageLockPath = `./${projectName}/package-lock.json`
-  // const packageLock = await read('./package-lock.json')
-  // await write(localePackageLockPath, packageLock)
+  // Sync root package-lock.json to projects
+  const localePackageLockPath = pathToProjectPackageLockJson(projectName)
+  const packageLock = await read(pathToRootPackageJson())
+  await write(localePackageLockPath, packageLock)
 }
 
 

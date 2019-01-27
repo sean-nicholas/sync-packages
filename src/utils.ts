@@ -16,6 +16,14 @@ export function pathToRootPackageJson() {
   return join(process.cwd(), 'package.json')
 }
 
+export function pathToRootPackageLockJson() {
+  return join(process.cwd(), 'package-lock.json')
+}
+
 export function pathToProjectPackageJson(projectName) {
   return join(process.cwd(), projectName, 'package.json')
+}
+
+export function pathToProjectPackageLockJson(projectName) {
+  return join(process.cwd(), projectName, 'package-lock.json')
 }
