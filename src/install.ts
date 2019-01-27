@@ -3,6 +3,7 @@ import { writeFile } from 'fs'
 import { promisify } from 'util'
 import { loadPackageDefs } from './package-defs'
 import { syncPackageDefs } from './sync'
+import { pathToPackageDefs, pathToRootPackageJson } from './utils'
 
 const write = promisify(writeFile)
 
@@ -14,7 +15,7 @@ function extractPackageNameFromCommands(commands: string[]) {
 
 function getNewInstalledPackageInfo(commands: string[]) {
   const packageName = extractPackageNameFromCommands(commands)
-  const packageJson = require('./package.json')
+  const packageJson = require(pathToRootPackageJson())
   const depPlaces = {
     'dependencies': packageJson.dependencies,
     'devDependencies': packageJson.devDependencies
@@ -28,7 +29,7 @@ function getNewInstalledPackageInfo(commands: string[]) {
 }
 
 export async function addToPackageDefs(projectName, commands) {
-  const packageDefsPath = './package-defs.json'
+  const packageDefsPath = pathToPackageDefs()
   const { depName, packageName, version } = getNewInstalledPackageInfo(commands)
   const packageDefs = loadPackageDefs()
 

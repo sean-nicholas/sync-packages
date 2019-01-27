@@ -1,7 +1,8 @@
 import { PackageDefs } from './types/package-defs'
+import { pathToPackageDefs } from './utils'
 
 export function loadPackageDefs() {
-  const packageDefsPath = './package-defs.json'
+  const packageDefsPath = pathToPackageDefs()
 
   let packageDefs: PackageDefs
   try {

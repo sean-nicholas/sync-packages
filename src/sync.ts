@@ -1,4 +1,4 @@
-import { orderObject } from './utils'
+import { orderObject, pathToProjectPackageJson, pathToRootPackageJson } from './utils'
 import { writeFile } from 'fs'
 import { promisify } from 'util'
 import { loadPackageDefs } from './package-defs'
@@ -9,7 +9,7 @@ export async function syncProject(projectName, packageDefs) {
   // Shared does not have a local package.json
   if (projectName === 'shared') return
 
-  const packageJsonPath = `./${projectName}/package.json`
+  const packageJsonPath = pathToProjectPackageJson(projectName)
   const packageJson = require(packageJsonPath)
   const dependencies = packageDefs[projectName].dependencies || {}
   const devDependencies = packageDefs[projectName].devDependencies || {}
@@ -36,7 +36,7 @@ export async function syncAllProjects(packageDefs) {
 }
 
 export async function syncToRootPackageJson() {
-  const packageJsonPath = './package.json'
+  const packageJsonPath = pathToRootPackageJson()
   const packageJson = require(packageJsonPath)
   const packageDefs = loadPackageDefs()
   const dependencies = {}

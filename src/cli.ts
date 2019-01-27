@@ -1,7 +1,8 @@
 import * as program from 'commander'
-import { install, addToPackageDefs, installToProject } from './install'
+import { install, installToProject } from './install'
 import { syncPackageDefs, syncToRootPackageJson } from './sync'
 import { loadPackageDefs } from './package-defs'
+
 const ownPackageJson = require('../package.json')
 
 program
