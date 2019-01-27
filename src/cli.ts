@@ -17,7 +17,7 @@ program
   })
 
 program
-  .command('install')
+  .command('install-all')
   .description('installs dependencies from all projects into root folder')
   .action(async () => {
     await syncToRootPackageJson()
