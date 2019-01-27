@@ -7,6 +7,17 @@ import { PackageDefs } from './types/package-defs'
 const write = promisify(writeFile)
 const read = promisify(readFile)
 
+async function saveDependencies({ path, packageJson, dependencies, devDependencies }) {
+  packageJson.dependencies = orderObject(dependencies)
+  packageJson.devDependencies = orderObject(devDependencies)
+  await write(path, JSON.stringify(packageJson, null, 2))
+}
+
+function addDependencies(dependencies, dependenciesToAdd) {
+  if (!dependenciesToAdd) return dependencies
+  return Object.assign({}, dependencies, dependenciesToAdd)
+}
+
 export async function syncProject(projectName, packageDefs: PackageDefs) {
   const project = packageDefs[projectName]
 
@@ -14,21 +25,24 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
 
   const packageJsonPath = pathToProjectPackageJson(projectName)
   const packageJson = require(packageJsonPath)
-  const dependencies = packageDefs[projectName].dependencies || {}
-  const devDependencies = packageDefs[projectName].devDependencies || {}
+  let dependencies = project.dependencies || {}
+  let devDependencies = project.devDependencies || {}
 
   // Add dependencies from other projects in project.uses
   if (project.uses) {
     for (const usedProjectName of project.uses) {
       const usedProject = packageDefs[usedProjectName]
-      if (usedProject.dependencies) Object.assign(dependencies, usedProject.dependencies)
-      if (usedProject.devDependencies) Object.assign(devDependencies, usedProject.devDependencies)
+      dependencies = addDependencies(dependencies, usedProject.dependencies)
+      devDependencies = addDependencies(devDependencies, usedProject.devDependencies)
     }
   }
 
-  packageJson.dependencies = orderObject(dependencies)
-  packageJson.devDependencies = orderObject(devDependencies)
-  await write(packageJsonPath, JSON.stringify(packageJson, null, 2))
+  await saveDependencies({
+    path: packageJsonPath,
+    packageJson,
+    dependencies,
+    devDependencies
+  })
 
   // Sync root package-lock.json to projects
   const localePackageLockPath = pathToProjectPackageLockJson(projectName)
@@ -45,15 +59,20 @@ export async function syncToRootPackageJson() {
   const packageJsonPath = pathToRootPackageJson()
   const packageJson = require(packageJsonPath)
   const packageDefs = loadPackageDefs()
-  const dependencies = {}
-  const devDependencies = {}
+
+  let dependencies = {}
+  let devDependencies = {}
   for (const project of Object.values(packageDefs)) {
-    Object.assign(dependencies, (project as any).dependencies)
-    Object.assign(devDependencies, (project as any).devDependencies)
+    dependencies = addDependencies(dependencies, project.dependencies)
+    devDependencies = addDependencies(devDependencies, project.devDependencies)
   }
-  packageJson.dependencies = orderObject(dependencies)
-  packageJson.devDependencies = orderObject(devDependencies)
-  await write(packageJsonPath, JSON.stringify(packageJson, null, 2))
+
+  await saveDependencies({
+    path: packageJsonPath,
+    packageJson,
+    dependencies,
+    devDependencies
+  })
 }
 
 export async function syncPackageDefs(projectName, packageDefs) {
