@@ -1,7 +1,8 @@
 export interface PackageDefs {
   [projectName: string]: {
     uses?: string[]
-    packageJsonPath?: string
+    // TODO: Add
+    // packageJsonPath?: string
     sync?: boolean
     dependencies?: {
       [packageName: string]: string
