@@ -1,14 +1,14 @@
 import { PackageDefs } from './types/package-defs'
 import { pathToPackageDefs } from './utils'
+import { existsSync } from 'fs'
 
 export function loadPackageDefs() {
   const packageDefsPath = pathToPackageDefs()
 
   let packageDefs: PackageDefs
-  try {
+  if (existsSync(packageDefsPath)) {
     packageDefs = require(packageDefsPath)
-  } catch (error) {
-    // TODO: Better error handling. Maybe package-defs.json exists but is not readable
+  } else {
     packageDefs = {}
   }
 
