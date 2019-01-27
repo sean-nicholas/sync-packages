@@ -8,6 +8,7 @@ export function loadPackageDefs() {
   try {
     packageDefs = require(packageDefsPath)
   } catch (error) {
+    // TODO: Better error handling. Maybe package-defs.json exists but is not readable
     packageDefs = {}
   }
 

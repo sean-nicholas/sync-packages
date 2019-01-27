@@ -2,22 +2,27 @@ import { orderObject, pathToProjectPackageJson, pathToRootPackageJson } from './
 import { writeFile } from 'fs'
 import { promisify } from 'util'
 import { loadPackageDefs } from './package-defs'
+import { PackageDefs } from './types/package-defs'
 
 const write = promisify(writeFile)
 
-export async function syncProject(projectName, packageDefs) {
-  // Shared does not have a local package.json
-  if (projectName === 'shared') return
+export async function syncProject(projectName, packageDefs: PackageDefs) {
+  const project = packageDefs[projectName]
+
+  if (!project.sync) return
 
   const packageJsonPath = pathToProjectPackageJson(projectName)
   const packageJson = require(packageJsonPath)
   const dependencies = packageDefs[projectName].dependencies || {}
   const devDependencies = packageDefs[projectName].devDependencies || {}
 
-  // Add shared dependencies
-  if (packageDefs.shared) {
-    if (packageDefs.shared.dependencies) Object.assign(dependencies, packageDefs.shared.dependencies)
-    if (packageDefs.shared.devDependencies) Object.assign(devDependencies, packageDefs.shared.devDependencies)
+  // Add dependencies from projects in "uses"
+  if (project.uses) {
+    for (const usedProjectName of project.uses) {
+      const usedProject = packageDefs[usedProjectName]
+      if (usedProject.dependencies) Object.assign(dependencies, usedProject.dependencies)
+      if (usedProject.devDependencies) Object.assign(devDependencies, usedProject.devDependencies)
+    }
   }
 
   packageJson.dependencies = orderObject(dependencies)

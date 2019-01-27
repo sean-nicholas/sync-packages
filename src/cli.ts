@@ -31,7 +31,7 @@ program
     const packageDefs = loadPackageDefs()
     await Promise.all([
       syncToRootPackageJson(),
-      syncPackageDefs('', packageDefs)
+      syncPackageDefs(null, packageDefs)
     ])
   })
 
