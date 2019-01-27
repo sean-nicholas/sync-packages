@@ -11,5 +11,9 @@ export function loadPackageDefs() {
     packageDefs = {}
   }
 
+  for (const project of Object.values(packageDefs)) {
+    if (project.sync === undefined) project.sync = true
+  }
+
   return packageDefs
 }
