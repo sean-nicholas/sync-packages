@@ -1,0 +1,24 @@
+{
+  "name": "sync-packages",
+  "version": "0.1.0",
+  "description": "Manage package.json's for projects with shared code",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sean-nicholas",
+  "bin": {
+    "sync-packages": "./dist/cli.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "typescript": "^3.2.4"
+  }
+}
