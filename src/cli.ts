@@ -35,4 +35,15 @@ program
     ])
   })
 
+program
+  .command('find-same')
+  .description('searches for common packages in all projects')
+  .action(async () => {
+    const packageDefs = loadPackageDefs()
+    await Promise.all([
+      syncToRootPackageJson(),
+      syncPackageDefs(null, packageDefs)
+    ])
+  })
+
 program.parse(process.argv)
