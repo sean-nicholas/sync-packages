@@ -5,9 +5,9 @@ export interface PackageDefs {
     sync?: boolean
     dependencies?: {
       [packageName: string]: string
-    }[]
+    }
     devDependencies?: {
       [packageName: string]: string
-    }[]
+    }
   }
 }
