@@ -2,7 +2,7 @@ import { PackageDefs } from './types/package-defs'
 import { pathToPackageDefs } from './utils'
 import { existsSync } from 'fs'
 
-export function loadPackageDefs() {
+export function loadPackageDefs({ withDefaults = true } = {}) {
   const packageDefsPath = pathToPackageDefs()
 
   let packageDefs: PackageDefs
@@ -12,9 +12,14 @@ export function loadPackageDefs() {
     packageDefs = {}
   }
 
-  for (const project of Object.values(packageDefs)) {
-    if (project.sync === undefined) project.sync = true
+  if (withDefaults) {
+    if (packageDefs.$schema) delete packageDefs.$schema
+
+    for (const project of Object.values(packageDefs)) {
+      if (project.sync === undefined) project.sync = true
+    }
   }
+
 
   return packageDefs
 }

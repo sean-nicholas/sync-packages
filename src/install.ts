@@ -31,7 +31,7 @@ function getNewInstalledPackageInfo(commands: string[]) {
 export async function addToPackageDefs(projectName, commands) {
   const packageDefsPath = pathToPackageDefs()
   const { depName, packageName, version } = getNewInstalledPackageInfo(commands)
-  const packageDefs = loadPackageDefs()
+  const packageDefs = loadPackageDefs({ withDefaults: false })
 
   packageDefs[projectName] = packageDefs[projectName] || {}
   packageDefs[projectName][depName] = packageDefs[projectName][depName] || {}
