@@ -4,7 +4,9 @@
   "description": "Manage package.json's for projects with shared code",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./dist && npm run build-src && npm run build-schema",
+    "build-src": "tsc",
+    "build-schema": "typescript-json-schema ./tsconfig.json PackageDefs --out dist/package-defs.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sean-nicholas",
