@@ -17,7 +17,7 @@ export function findSame() {
 
   const duplicates = allDependencies.filter(dep => _.find(allDependencies, allDep => {
     return (allDep.packageName === dep.packageName)
-      && (allDep.packageName !== dep.projectName)
+      && (allDep.projectName !== dep.projectName)
   }))
 
   console.log('duplicates', duplicates)
