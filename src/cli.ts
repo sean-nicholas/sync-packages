@@ -3,6 +3,7 @@ import * as program from 'commander'
 import { install, installToProject } from './install'
 import { syncPackageDefs, syncToRootPackageJson } from './sync'
 import { loadPackageDefs } from './package-defs'
+import { findSame } from './find-same'
 
 const ownPackageJson = require('../package.json')
 
@@ -39,11 +40,7 @@ program
   .command('find-same')
   .description('searches for common packages in all projects')
   .action(async () => {
-    const packageDefs = loadPackageDefs()
-    await Promise.all([
-      syncToRootPackageJson(),
-      syncPackageDefs(null, packageDefs)
-    ])
+    findSame()
   })
 
 program.parse(process.argv)
