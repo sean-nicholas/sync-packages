@@ -20,5 +20,11 @@ export function findSame() {
       && (allDep.projectName !== dep.projectName)
   }))
 
-  console.log('duplicates', duplicates)
+  const overview = _(duplicates)
+    .sortBy(dup => dup.packageName)
+    .groupBy(dup => dup.packageName)
+    .mapValues(dups => dups.map(dup => dup.projectName))
+    .value()
+
+  console.log(overview)
 }
