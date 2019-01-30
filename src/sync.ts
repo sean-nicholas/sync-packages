@@ -23,7 +23,7 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
 
   if (!project.sync) return
 
-  const packageJsonPath = pathToProjectPackageJson(projectName)
+  const packageJsonPath = pathToProjectPackageJson(projectName, packageDefs)
   const packageJson = require(packageJsonPath)
   let dependencies = project.dependencies || {}
   let devDependencies = project.devDependencies || {}
@@ -45,7 +45,7 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
   })
 
   // Sync root package-lock.json to projects
-  const localePackageLockPath = pathToProjectPackageLockJson(projectName)
+  const localePackageLockPath = pathToProjectPackageLockJson(projectName, packageDefs)
   const packageLock = await read(pathToRootPackageJson())
   await write(localePackageLockPath, packageLock)
 }
