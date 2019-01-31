@@ -20,11 +20,20 @@ export function findSame() {
       && (allDep.projectName !== dep.projectName)
   }))
 
-  const overview = _(duplicates)
+  return _(duplicates)
     .sortBy(dup => dup.packageName)
     .groupBy(dup => dup.packageName)
     .mapValues(dups => dups.map(dup => dup.projectName))
     .value()
+}
 
-  console.log(overview)
+export function printSame() {
+  const packages = findSame()
+
+  for (const [packageName, projects] of Object.entries(packages)) {
+    console.log(packageName)
+    for (const project of projects) {
+      console.log(`\t${project}`)
+    }
+  }
 }
