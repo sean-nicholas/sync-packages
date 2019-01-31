@@ -1,5 +1,5 @@
 import { PackageDefs } from './types/package-defs'
-import { pathToPackageDefs } from './utils'
+import { pathToPackageDefs, orderObject } from './utils'
 import { existsSync, writeFile } from 'fs'
 import { promisify } from 'util'
 
@@ -29,6 +29,7 @@ export function loadPackageDefs({ withDefaults = true } = {}) {
 
 export async function writePackageDefs(packageDefs: PackageDefs) {
   const packageDefsPath = pathToPackageDefs()
-  await write(packageDefsPath, JSON.stringify(packageDefs, null, 2))
+  const ordered = orderObject(packageDefs)
+  await write(packageDefsPath, JSON.stringify(ordered, null, 2))
   return packageDefs
 }
