@@ -1,6 +1,9 @@
 import { PackageDefs } from './types/package-defs'
 import { pathToPackageDefs } from './utils'
-import { existsSync } from 'fs'
+import { existsSync, writeFile } from 'fs'
+import { promisify } from 'util'
+
+const write = promisify(writeFile)
 
 export function loadPackageDefs({ withDefaults = true } = {}) {
   const packageDefsPath = pathToPackageDefs()
@@ -21,5 +24,11 @@ export function loadPackageDefs({ withDefaults = true } = {}) {
   }
 
 
+  return packageDefs
+}
+
+export async function writePackageDefs(packageDefs: PackageDefs) {
+  const packageDefsPath = pathToPackageDefs()
+  await write(packageDefsPath, JSON.stringify(packageDefs, null, 2))
   return packageDefs
 }

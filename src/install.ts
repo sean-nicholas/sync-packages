@@ -1,9 +1,9 @@
 import { spawn } from 'child_process'
 import { writeFile } from 'fs'
 import { promisify } from 'util'
-import { loadPackageDefs } from './package-defs'
+import { loadPackageDefs, writePackageDefs } from './package-defs'
 import { syncPackageDefs } from './sync'
-import { pathToPackageDefs, pathToRootPackageJson } from './utils'
+import { pathToRootPackageJson } from './utils'
 
 const write = promisify(writeFile)
 
@@ -29,7 +29,6 @@ function getNewInstalledPackageInfo(commands: string[]) {
 }
 
 export async function addToPackageDefs(projectName, commands) {
-  const packageDefsPath = pathToPackageDefs()
   const { depName, packageName, version } = getNewInstalledPackageInfo(commands)
   const packageDefs = loadPackageDefs({ withDefaults: false })
 
@@ -37,8 +36,7 @@ export async function addToPackageDefs(projectName, commands) {
   packageDefs[projectName][depName] = packageDefs[projectName][depName] || {}
   packageDefs[projectName][depName][packageName] = version
 
-  await write(packageDefsPath, JSON.stringify(packageDefs, null, 2))
-  return packageDefs
+  return writePackageDefs(packageDefs)
 }
 
 export function install(commands = []) {

@@ -4,11 +4,19 @@ import { install, installToProject } from './install'
 import { syncPackageDefs, syncToRootPackageJson } from './sync'
 import { loadPackageDefs } from './package-defs'
 import { findSame, printSame } from './find-same'
+import { init } from './init'
 
 const ownPackageJson = require('../package.json')
 
 program
   .version(ownPackageJson.version)
+
+program
+  .command('init')
+  .description('initializes package-defs.json')
+  .action(() => {
+    init()
+  })
 
 program
   .command('install <project> <npmParams...>')
