@@ -8,9 +8,19 @@ import { pathToRootPackageJson } from './utils'
 const write = promisify(writeFile)
 
 function extractPackageNameFromCommands(commands: string[]) {
+  let packageInfo: string
   for (const command of commands) {
-    if (!command.startsWith('--')) return command
+    if (!command.startsWith('--')) {
+      packageInfo = command
+      break
+    }
   }
+  // If package is installed with a version (package@1.0.4) the version must be removed
+  const matches = packageInfo.match(/^(.*)\@[0-9\.]*/)
+  if (matches) return matches[1]
+
+  // No version seems to be appended
+  return packageInfo
 }
 
 function getNewInstalledPackageInfo(commands: string[]) {
