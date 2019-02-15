@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { resolve } from 'path'
 import { PackageDefs } from './types/package-defs'
 
 export function orderObject(unordered) {
@@ -10,29 +10,29 @@ export function orderObject(unordered) {
 }
 
 export function pathToPackageDefs() {
-  return join(process.cwd(), 'package-defs.json')
+  return resolve(process.cwd(), 'package-defs.json')
 }
 
 export function pathToRootPackageJson() {
-  return join(process.cwd(), 'package.json')
+  return resolve(process.cwd(), 'package.json')
 }
 
 export function pathToRootPackageLockJson() {
-  return join(process.cwd(), 'package-lock.json')
+  return resolve(process.cwd(), 'package-lock.json')
 }
 
 function pathToProject(projectName, packageDefs: PackageDefs) {
   const project = packageDefs[projectName]
   if (project && project.projectPath) return project.projectPath
-  return join(process.cwd(), projectName)
+  return resolve(process.cwd(), projectName)
 }
 
 export function pathToProjectPackageJson(projectName, packageDefs: PackageDefs) {
   const packageJsonFolder = pathToProject(projectName, packageDefs)
-  return join(packageJsonFolder, 'package.json')
+  return resolve(packageJsonFolder, 'package.json')
 }
 
 export function pathToProjectPackageLockJson(projectName, packageDefs: PackageDefs) {
   const packageJsonFolder = pathToProject(projectName, packageDefs)
-  return join(packageJsonFolder, 'package-lock.json')
+  return resolve(packageJsonFolder, 'package-lock.json')
 }
