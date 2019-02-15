@@ -39,6 +39,7 @@ program
   .action(async () => {
     const packageDefs = loadPackageDefs()
     await Promise.all([
+      // TODO: npm install before syncing package-lock.json
       syncToRootPackageJson(),
       syncPackageDefs(null, packageDefs)
     ])
