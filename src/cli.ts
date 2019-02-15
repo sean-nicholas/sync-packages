@@ -31,6 +31,7 @@ program
   .action(async () => {
     await syncToRootPackageJson()
     await install()
+    // TODO: Sync package-lock.json's
   })
 
 program
