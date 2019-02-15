@@ -1,4 +1,4 @@
-import { orderObject, pathToProjectPackageJson, pathToRootPackageJson, pathToProjectPackageLockJson } from './utils'
+import { orderObject, pathToProjectPackageJson, pathToRootPackageJson, pathToProjectPackageLockJson, pathToRootPackageLockJson } from './utils'
 import { writeFile, readFile } from 'fs'
 import { promisify } from 'util'
 import { loadPackageDefs } from './package-defs'
@@ -46,7 +46,7 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
 
   // Sync root package-lock.json to projects
   const localePackageLockPath = pathToProjectPackageLockJson(projectName, packageDefs)
-  const packageLock = await read(pathToRootPackageJson())
+  const packageLock = await read(pathToRootPackageLockJson())
   await write(localePackageLockPath, packageLock)
 }
 
