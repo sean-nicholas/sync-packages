@@ -1,6 +1,6 @@
 {
-  "name": "sync-packages",
-  "version": "0.1.0",
+  "name": "@sean-nicholas/sync-packages",
+  "version": "0.1.5",
   "description": "Manage package.json's for projects with shared code",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,9 @@
     "tslint": "^5.12.1",
     "typescript": "^3.2.4",
     "typescript-json-schema": "^0.34.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sean-nicholas/sync-packages.git"
   }
 }
