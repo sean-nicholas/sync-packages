@@ -1,7 +1,7 @@
-import { pathToProjectPackageLockJson, pathToRootPackageLockJson } from './utils/paths'
+import { pathToProjectPackageLockJson, pathToRootPackageLockJson } from './paths'
 import { promisify } from 'util'
 import { writeFile, readFile } from 'fs'
-import { PackageDefs } from './types/package-defs'
+import { PackageDefs } from '../types/package-defs'
 
 const write = promisify(writeFile)
 const read = promisify(readFile)

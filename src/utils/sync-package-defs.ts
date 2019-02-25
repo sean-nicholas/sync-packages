@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
-import { PackageDefs } from './types/package-defs'
-import { pathToProjectPackageJson, pathToRootPackageJson } from './utils/paths'
-import { saveDependencies } from './utils/save-dependencies'
+import { PackageDefs } from '../types/package-defs'
+import { pathToProjectPackageJson, pathToRootPackageJson } from './paths'
+import { saveDependencies } from './save-dependencies'
 
 function getAllDependencies(packageDefs: PackageDefs, projectNames: string[]) {
   const depList = _.map(projectNames, name => packageDefs[name].dependencies)

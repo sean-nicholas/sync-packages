@@ -1,8 +1,8 @@
 import { spawn } from 'child_process'
 import { loadPackageDefs, writePackageDefs } from './utils/package-defs-io'
 import { pathToRootPackageJson } from './utils/paths'
-import { syncPackageDefsToAllProjects, syncPackageDefsToRoot } from './sync-package-defs'
-import { syncPackageLockToAllProjects } from './sync-package-lock'
+import { syncPackageDefsToAllProjects, syncPackageDefsToRoot } from './utils/sync-package-defs'
+import { syncPackageLockToAllProjects } from './utils/sync-package-lock'
 
 function extractPackageNameFromCommands(commands: string[]) {
   let packageInfo: string

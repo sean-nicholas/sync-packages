@@ -4,8 +4,8 @@ import { install, installToProject, installAll } from './install'
 import { loadPackageDefs } from './utils/package-defs-io'
 import { printSame } from './find-same'
 import { init } from './init'
-import { syncPackageDefsToRoot, syncPackageDefsToAllProjects } from './sync-package-defs'
-import { syncPackageLockToAllProjects } from './sync-package-lock'
+import { syncPackageDefsToRoot, syncPackageDefsToAllProjects } from './utils/sync-package-defs'
+import { syncPackageLockToAllProjects } from './utils/sync-package-lock'
 
 const ownPackageJson = require('../package.json')
 
