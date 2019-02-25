@@ -10,6 +10,10 @@ const read = promisify(readFile)
  * Sync root package-lock.json to project
  */
 export async function syncPackageLockToProject(packageDefs: PackageDefs, projectName: string) {
+  const project = packageDefs[projectName]
+
+  if (!project.sync) return
+
   const localePackageLockPath = pathToProjectPackageLockJson(packageDefs, projectName)
   const packageLock = await read(pathToRootPackageLockJson())
   await write(localePackageLockPath, packageLock)
