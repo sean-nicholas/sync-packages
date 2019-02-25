@@ -27,7 +27,7 @@ export async function syncPackageDefsToProject(packageDefs: PackageDefs, project
   await saveDependencies({
     path: packageJsonPath,
     packageJson,
-    ...getAllDependencies(packageDefs, project.uses)
+    ...getAllDependencies(packageDefs, [projectName, project.uses])
   })
 
   // TODO: Sync package-lock here or outside?
