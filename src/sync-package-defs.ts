@@ -34,7 +34,7 @@ export async function syncPackageDefsToProject(packageDefs: PackageDefs, project
 }
 
 export async function syncPackageDefsToAllProjects(packageDefs: PackageDefs) {
-  return Promise.all(Object.keys(packageDefs).map(projectName => syncPackageDefsToProject(projectName, packageDefs)))
+  return Promise.all(Object.keys(packageDefs).map(projectName => syncPackageDefsToProject(packageDefs, projectName)))
 }
 
 export async function syncPackageDefsToRoot(packageDefs: PackageDefs) {
