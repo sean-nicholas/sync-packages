@@ -4,8 +4,8 @@ import { pathToProjectPackageJson, pathToRootPackageJson } from './paths'
 import { saveDependencies } from './save-dependencies'
 
 function getAllDependencies(packageDefs: PackageDefs, projectNames: string[]) {
-  const depList = _.map(projectNames, name => packageDefs[name].dependencies)
-  const devDepList = _.map(projectNames, name => packageDefs[name].devDependencies)
+  const depList = _.map(projectNames, name => (packageDefs[name] || {}).dependencies)
+  const devDepList = _.map(projectNames, name => (packageDefs[name] || {}).devDependencies)
 
   const dependencies = Object.assign({}, ..._.filter(depList, el => el))
   const devDependencies = Object.assign({}, ..._.filter(devDepList, el => el))
