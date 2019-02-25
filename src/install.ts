@@ -33,6 +33,8 @@ function getNewInstalledPackageInfo(commands: string[]) {
       if (name === packageName) return { depName, packageName, version }
     }
   }
+
+  throw new Error(`Can't find package ${packageName} in root package.json`)
 }
 
 async function addToPackageDefs(projectName, commands) {
@@ -46,19 +48,19 @@ async function addToPackageDefs(projectName, commands) {
   return writePackageDefs(packageDefs)
 }
 
-export function install(commands = []) {
+export function npmInstall(commands = []) {
   return new Promise((res, rej) => {
-    const npmInstall = spawn('npm', ['install', ...commands])
+    const npmProcess = spawn('npm', ['install', ...commands])
 
-    npmInstall.stdout.on('data', (data) => {
+    npmProcess.stdout.on('data', (data) => {
       console.log(data.toString())
     })
 
-    npmInstall.stderr.on('data', (data) => {
+    npmProcess.stderr.on('data', (data) => {
       console.log(data.toString())
     })
 
-    npmInstall.on('exit', (code) => {
+    npmProcess.on('exit', (code) => {
       if (code === 0) return res()
       console.log('child process exited with code ' + code.toString())
       rej(code)
@@ -66,16 +68,21 @@ export function install(commands = []) {
   })
 }
 
-export async function installToProject(projectName, commands) {
-  await install(commands)
+export async function installToProject(projectName: string, commands: string[]) {
+  await npmInstall(commands)
   const packageDefs = await addToPackageDefs(projectName, commands)
-  await syncPackageDefsToAllProjects(packageDefs)
-  await syncPackageLockToAllProjects(packageDefs)
+  await Promise.all([
+    syncPackageDefsToAllProjects(packageDefs),
+    syncPackageLockToAllProjects(packageDefs),
+  ])
 }
 
 export async function installAll() {
   const packageDefs = loadPackageDefs()
   await syncPackageDefsToRoot(packageDefs)
-  await install()
-  await syncPackageLockToAllProjects(packageDefs)
+  await npmInstall()
+  await Promise.all([
+    syncPackageDefsToAllProjects(packageDefs),
+    syncPackageLockToAllProjects(packageDefs),
+  ])
 }

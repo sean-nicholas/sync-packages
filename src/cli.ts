@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 import * as program from 'commander'
-import { install, installToProject, installAll } from './install'
-import { loadPackageDefs } from './utils/package-defs-io'
+import { installToProject, installAll } from './install'
 import { printSame } from './find-same'
 import { init } from './init'
-import { syncPackageDefsToRoot, syncPackageDefsToAllProjects } from './utils/sync-package-defs'
-import { syncPackageLockToAllProjects } from './utils/sync-package-lock'
 import { sync } from './sync'
 
 const ownPackageJson = require('../package.json')
@@ -32,13 +29,6 @@ program
   .description('installs dependencies from all projects into root folder')
   .action(() => {
     installAll()
-  })
-
-program
-  .command('sync')
-  .description('updates the package.json of all projects with the dependencies defined in package-defs.json')
-  .action(() => {
-    sync()
   })
 
 program
