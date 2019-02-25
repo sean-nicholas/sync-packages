@@ -3,7 +3,6 @@ import * as program from 'commander'
 import { installToProject, installAll } from './install'
 import { printSame } from './find-same'
 import { init } from './init'
-import { sync } from './sync'
 
 const ownPackageJson = require('../package.json')
 
