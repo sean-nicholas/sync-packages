@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
-import { loadPackageDefs, writePackageDefs } from './utils/package-defs'
+import { loadPackageDefs, writePackageDefs } from './utils/package-defs-io'
 import { pathToRootPackageJson } from './utils/paths'
-import { syncAllProjects } from './sync'
+import { syncPackageDefsToAllProjects } from './sync-package-defs'
 
 function extractPackageNameFromCommands(commands: string[]) {
   let packageInfo: string
@@ -34,7 +34,7 @@ function getNewInstalledPackageInfo(commands: string[]) {
   }
 }
 
-export async function addToPackageDefs(projectName, commands) {
+async function addToPackageDefs(projectName, commands) {
   const { depName, packageName, version } = getNewInstalledPackageInfo(commands)
   const packageDefs = loadPackageDefs({ withDefaults: false })
 
@@ -68,5 +68,5 @@ export function install(commands = []) {
 export async function installToProject(projectName, commands) {
   await install(commands)
   const packageDefs = await addToPackageDefs(projectName, commands)
-  await syncAllProjects(packageDefs)
+  await syncPackageDefsToAllProjects(packageDefs)
 }

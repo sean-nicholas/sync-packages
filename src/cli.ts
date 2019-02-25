@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import * as program from 'commander'
 import { install, installToProject } from './install'
-import { syncToRootPackageJson, syncAllProjects } from './sync'
-import { loadPackageDefs } from './utils/package-defs'
-import { findSame, printSame } from './find-same'
+import { loadPackageDefs } from './utils/package-defs-io'
+import { printSame } from './find-same'
 import { init } from './init'
+import { syncPackageDefsToRoot, syncPackageDefsToAllProjects } from './sync-package-defs'
 
 const ownPackageJson = require('../package.json')
 
@@ -30,7 +30,7 @@ program
   .description('installs dependencies from all projects into root folder')
   .action(async () => {
     const packageDefs = loadPackageDefs()
-    await syncToRootPackageJson(packageDefs)
+    await syncPackageDefsToRoot(packageDefs)
     await install()
     // TODO: Sync package-lock.json's
   })
@@ -42,8 +42,8 @@ program
     const packageDefs = loadPackageDefs()
     await Promise.all([
       // TODO: npm install before syncing package-lock.json
-      syncToRootPackageJson(packageDefs),
-      syncAllProjects(packageDefs)
+      syncPackageDefsToRoot(packageDefs),
+      syncPackageDefsToAllProjects(packageDefs)
     ])
   })
 

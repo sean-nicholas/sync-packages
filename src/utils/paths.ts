@@ -14,18 +14,18 @@ export function pathToRootPackageLockJson() {
   return resolve(process.cwd(), 'package-lock.json')
 }
 
-function pathToProject(projectName, packageDefs: PackageDefs) {
+function pathToProject(packageDefs: PackageDefs, projectName: string) {
   const project = packageDefs[projectName]
   if (project && project.projectPath) return project.projectPath
   return resolve(process.cwd(), projectName)
 }
 
-export function pathToProjectPackageJson(projectName, packageDefs: PackageDefs) {
-  const packageJsonFolder = pathToProject(projectName, packageDefs)
+export function pathToProjectPackageJson(packageDefs: PackageDefs, projectName: string) {
+  const packageJsonFolder = pathToProject(packageDefs, projectName)
   return resolve(packageJsonFolder, 'package.json')
 }
 
-export function pathToProjectPackageLockJson(projectName, packageDefs: PackageDefs) {
-  const packageJsonFolder = pathToProject(projectName, packageDefs)
+export function pathToProjectPackageLockJson(packageDefs: PackageDefs, projectName: string) {
+  const packageJsonFolder = pathToProject(packageDefs, projectName)
   return resolve(packageJsonFolder, 'package-lock.json')
 }
