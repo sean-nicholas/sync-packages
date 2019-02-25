@@ -29,8 +29,6 @@ export async function syncPackageDefsToProject(packageDefs: PackageDefs, project
     packageJson,
     ...getAllDependencies(packageDefs, [projectName, project.uses])
   })
-
-  // TODO: Sync package-lock here or outside?
 }
 
 export async function syncPackageDefsToAllProjects(packageDefs: PackageDefs) {
