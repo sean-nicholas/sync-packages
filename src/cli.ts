@@ -6,6 +6,7 @@ import { printSame } from './find-same'
 import { init } from './init'
 import { syncPackageDefsToRoot, syncPackageDefsToAllProjects } from './utils/sync-package-defs'
 import { syncPackageLockToAllProjects } from './utils/sync-package-lock'
+import { sync } from './sync'
 
 const ownPackageJson = require('../package.json')
 
@@ -36,15 +37,8 @@ program
 program
   .command('sync')
   .description('updates the package.json of all projects with the dependencies defined in package-defs.json')
-  .action(async () => {
-    const packageDefs = loadPackageDefs()
-
-    await syncPackageDefsToRoot(packageDefs)
-    await install()
-    await Promise.all([
-      syncPackageDefsToAllProjects(packageDefs),
-      syncPackageLockToAllProjects(packageDefs)
-    ])
+  .action(() => {
+    sync()
   })
 
 program
