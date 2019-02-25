@@ -1,7 +1,8 @@
-import { PackageDefs } from './types/package-defs'
-import { pathToPackageDefs, orderObject } from './utils'
+import { PackageDefs } from '../types/package-defs'
+import { orderObject } from './order-object'
 import { existsSync, writeFile } from 'fs'
 import { promisify } from 'util'
+import { pathToPackageDefs } from './paths'
 
 const write = promisify(writeFile)
 

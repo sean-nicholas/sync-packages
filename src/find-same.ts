@@ -1,4 +1,4 @@
-import { loadPackageDefs } from './package-defs'
+import { loadPackageDefs } from './utils/package-defs'
 import * as _ from 'lodash'
 
 export function findSame() {

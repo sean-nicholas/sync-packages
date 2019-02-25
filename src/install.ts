@@ -1,11 +1,7 @@
 import { spawn } from 'child_process'
-import { writeFile } from 'fs'
-import { promisify } from 'util'
-import { loadPackageDefs, writePackageDefs } from './package-defs'
-import { syncPackageDefs } from './sync'
-import { pathToRootPackageJson } from './utils'
-
-const write = promisify(writeFile)
+import { loadPackageDefs, writePackageDefs } from './utils/package-defs'
+import { pathToRootPackageJson } from './utils/paths'
+import { syncAllProjects } from './sync'
 
 function extractPackageNameFromCommands(commands: string[]) {
   let packageInfo: string
@@ -72,5 +68,5 @@ export function install(commands = []) {
 export async function installToProject(projectName, commands) {
   await install(commands)
   const packageDefs = await addToPackageDefs(projectName, commands)
-  await syncPackageDefs(projectName, packageDefs)
+  await syncAllProjects(packageDefs)
 }

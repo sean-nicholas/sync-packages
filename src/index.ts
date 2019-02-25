@@ -1,5 +1,5 @@
 export * from './types/package-defs'
 export * from './install'
-export * from './package-defs'
+export * from './utils/package-defs'
 export * from './sync'
-export * from './utils'
+export * from './utils/order-object'

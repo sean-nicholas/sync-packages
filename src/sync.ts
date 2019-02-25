@@ -1,8 +1,8 @@
-import { orderObject, pathToProjectPackageJson, pathToRootPackageJson, pathToProjectPackageLockJson, pathToRootPackageLockJson } from './utils'
 import { writeFile, readFile } from 'fs'
 import { promisify } from 'util'
-import { loadPackageDefs } from './package-defs'
 import { PackageDefs } from './types/package-defs'
+import { orderObject } from './utils/order-object'
+import { pathToProjectPackageJson, pathToProjectPackageLockJson, pathToRootPackageLockJson, pathToRootPackageJson } from './utils/paths'
 
 const write = promisify(writeFile)
 const read = promisify(readFile)
@@ -51,14 +51,13 @@ export async function syncProject(projectName, packageDefs: PackageDefs) {
 }
 
 
-export async function syncAllProjects(packageDefs) {
+export async function syncAllProjects(packageDefs: PackageDefs) {
   return Promise.all(Object.keys(packageDefs).map(projectName => syncProject(projectName, packageDefs)))
 }
 
-export async function syncToRootPackageJson() {
+export async function syncToRootPackageJson(packageDefs: PackageDefs) {
   const packageJsonPath = pathToRootPackageJson()
   const packageJson = require(packageJsonPath)
-  const packageDefs = loadPackageDefs()
 
   let dependencies = {}
   let devDependencies = {}
@@ -75,7 +74,7 @@ export async function syncToRootPackageJson() {
   })
 }
 
-export async function syncPackageDefs(projectName, packageDefs) {
-  if (!projectName) return syncAllProjects(packageDefs)
-  return syncProject(projectName, packageDefs)
-}
+// export async function syncPackageDefs(projectName, packageDefs) {
+//   if (!projectName) return syncAllProjects(packageDefs)
+//   return syncProject(projectName, packageDefs)
+// }

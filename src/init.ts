@@ -1,4 +1,4 @@
-import { loadPackageDefs, writePackageDefs } from './package-defs'
+import { loadPackageDefs, writePackageDefs } from './utils/package-defs'
 import { join, relative } from 'path'
 
 export function init() {

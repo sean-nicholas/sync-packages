@@ -1,13 +1,6 @@
 import { resolve } from 'path'
-import { PackageDefs } from './types/package-defs'
+import { PackageDefs } from '../types/package-defs'
 
-export function orderObject(unordered) {
-  const ordered = {}
-  Object.keys(unordered).sort().forEach((key) => {
-    ordered[key] = unordered[key]
-  })
-  return ordered
-}
 
 export function pathToPackageDefs() {
   return resolve(process.cwd(), 'package-defs.json')
